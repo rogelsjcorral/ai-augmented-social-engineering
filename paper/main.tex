@@ -1,0 +1,400 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage[breaklinks=true]{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue,
+  breaklinks=true,
+  pdfauthor={Rogel Corral},
+  pdftitle={AI-Augmented Social Engineering: When Trust Becomes a Control-Plane Risk},
+  pdfsubject={Technical Position Paper},
+  pdfkeywords={social engineering, generative AI, phishing, identity compromise, control plane, delegation drift, authentication, security operations},
+  pdfcreator={Rogel Corral}
+}
+\urlstyle{same}
+
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=2pt}
+
+\usepackage{titlesec}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+
+\title{AI-Augmented Social Engineering: When Trust Becomes a Control-Plane Risk}
+
+\author{Rogel Corral\\Independent Researcher}
+
+\date{Version 1.0\\License: CC BY-SA 4.0\\Date: 2026-04-02}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Social engineering is not new. What is new is the production line.
+
+AI has turned human manipulation into a scalable, adaptive operation. Instead of sending the same generic lure to thousands of people, attackers can now generate high-fidelity messages that match an organization’s tone, workflows, and timing, then sustain a believable back-and-forth across channels until the target complies.
+
+This is not theoretical. In early 2024, a finance worker at Arup’s Hong Kong office was deceived by an AI-generated video call impersonating senior executives and transferred approximately US\$25 million \cite{milmo2024}. In the same year, testimony to the U.S. Senate described how the Change Healthcare ransomware incident began with compromised credentials used to access a remote Citrix portal that did not have multi-factor authentication, followed by lateral movement and deployment of ransomware \cite{witty2024}. Recent threat intelligence reporting has also documented credential-phishing activity that likely used AI-generated code to obfuscate payload behaviour and evade traditional defences \cite{microsoft2025}.
+
+This technical position paper introduces a vendor-neutral threat model for AI-augmented social engineering that focuses on the real failure mode organizations keep underestimating: a trust error is rarely just a phishing incident. In modern environments, a trust error often becomes an identity event, and an identity event can become a control-plane event, meaning compromise of the identity and administrative layer that governs access, permissions, and recovery, if privilege boundaries, delegation hygiene, recovery workflows, and detection are weak. The primary danger is not a novel malware technique. The primary danger is recursive trust, where each reasonable action taken by a user unlocks the next, higher-impact action.
+
+The paper proposes a practical defensive framework: reduce authentication ambiguity, harden reset and recovery workflows, constrain delegation and privilege pathways, separate administrative identities, and add detection designed specifically for identity-to-control-plane escalation patterns. AI can help defenders as well, but only if used as an assistant to verification and response, not as an authority replacing it.
+
+This is a solvable problem. It just requires treating humans as part of the security perimeter and treating trust as an asset that must be rate-limited, verified, and monitored.
+\end{abstract}
+
+\noindent\textbf{Keywords:} social engineering, generative AI, phishing, identity compromise, control plane, delegation drift, authentication, security operations
+
+\section{The Problem: Social Engineering Became Adaptive}
+
+Traditional social engineering relied on volume and luck. Most attempts were low effort, easy to spot, and failed often. Training and basic controls improved outcomes.
+
+AI changes the economics.
+
+Attackers can now do three things cheaply that used to be expensive:
+
+\begin{enumerate}[leftmargin=1.5em]
+    \item \textbf{Context matching}
+
+    Messages resemble internal language, operational routines, and role interactions.
+
+    \item \textbf{Iterative persuasion}
+
+    The attack is not one email. It is a sequence of interactions across email, chat, SMS, voice, tickets, and document portals, adapting after each response.
+
+    \item \textbf{Scale with precision}
+
+    Instead of blasting 10,000 generic messages, attackers can target 50 high-leverage people with customized pretexts and higher success probability.
+\end{enumerate}
+
+The result is not simply ``more phishing.'' The result is persistent manipulation that exploits the way modern organizations work.
+
+\section{What AI Actually Adds to the Threat}
+
+AI is not magic. It is leverage. It improves the attacker’s ability to:
+
+\begin{itemize}[leftmargin=1.5em]
+    \item imitate tone and vocabulary
+    \item maintain role-consistent dialogue
+    \item create plausible urgency without sounding sloppy
+    \item craft operationally believable requests
+    \item adapt quickly when the target hesitates
+\end{itemize}
+
+This matters because many organizations still rely on a human heuristic that is no longer reliable: ``If it looks normal, it is normal.''
+
+AI attacks are designed to look normal.
+
+\section{The Core Failure Mode: Recursive Trust}
+
+Most security programs frame the problem as content filtering: detect malicious emails, block bad links, scan attachments.
+
+That helps, but it misses the higher-order risk: recursive trust.
+
+Recursive trust is the chain where each step is small and plausible, but the combined sequence ends in a control-plane event. The attacker is not trying to exploit a server first. They are trying to exploit the human trust pipeline until identity and authority are within reach.
+
+The organization’s mistake is treating early steps as low impact because they look like routine business.
+
+\section{Threat Model: The ``Recursive Trust'' Hijack (Vendor Neutral)}
+
+\textbf{Scenario}
+
+A mid-level employee is targeted through routine business communication. The attacker’s objective is to convert a trust error into an identity compromise, then expand access through weak privilege pathways and configuration drift, potentially escalating into a directory or administrative control-plane incident.
+
+\textbf{Phase 1: Adaptive Reconnaissance (AI Powered)}
+
+\textbf{What happens}
+
+An attacker uses an LLM to synthesize publicly available signals about an organization’s language patterns and workflows. Sources can include websites, public documents, job postings, conference material, and social media.
+
+\textbf{Why AI changes the game}
+
+The attacker produces communications that are operationally believable and role-appropriate, designed to match the target’s daily workflow.
+
+\textbf{Defensive implication}
+
+A message can be high quality and still be malicious. Visual polish is no longer a useful indicator.
+
+\textbf{Phase 2: Authentication Interposition (Workflow Spoofing)}
+
+\textbf{What happens}
+
+The target is directed into a familiar ``secure portal'' or ``document access'' flow that mimics a legitimate authentication experience. The lure avoids malware and instead aims for credentials, session tokens, or consent.
+
+\textbf{Why it works}
+
+Modern environments generate frequent authentication prompts. Familiarity becomes a substitute for verification.
+
+\textbf{Defensive implication}
+
+If sender authentication enforcement and link protections are inconsistent, a high-fidelity impersonation attempt can arrive with minimal warning.
+
+\textbf{Phase 3: Post-Compromise Expansion (Identity to Privilege Touchpoints)}
+
+\textbf{What happens}
+
+With initial account access, the attacker maps privilege touch points: delegation paths, group sprawl, reset and recovery workflows, and approval mechanisms that allow a normal identity to influence higher-impact actions.
+
+\textbf{Why AI matters}
+
+AI accelerates discovery and prioritization. The attacker is not necessarily using exotic exploits. They are finding the lowest resistance pathway through the environment’s trust architecture.
+
+\textbf{Defensive implication}
+
+The ``blast radius'' of a compromised user depends on privilege hygiene, not on the user’s job title.
+
+\textbf{Phase 4: Privilege Escalation via Delegation Drift (Shadow Authority)}
+
+\textbf{What happens}
+
+The attacker leverages configuration drift: legacy permissions, over-broad delegation, mis-scoped policy objects, and temporary exceptions that became permanent. The goal is effective administrative capability, which may not require a visibly privileged account.
+
+\textbf{Defensive implication}
+
+Privilege is often emergent. If you only monitor obvious admin accounts, you will miss shadow authority.
+
+\section{Why Traditional Defences Miss This}
+
+\subsection{Email Security Is Necessary but Not Sufficient}
+
+Many attacks succeed without attachments or payloads. They rely on routine links, routine portals, and routine pressure.
+
+\subsection{Training Helps, but the Attack Is Interactive}
+
+Most training is built for one-shot lures. AI attacks can sustain a conversation, adjust tone, and exploit ambiguity until the target gives in.
+
+\subsection{The Perimeter Moved to Identity and Workflows}
+
+The attacker does not need to break encryption. They can convince someone to hand over access or approve a request.
+
+\subsection{Control-Plane Risk Is Underestimated}
+
+Organizations often treat a compromised user as a minor incident: reset the password, move on.
+
+In reality, identity compromise can be the start of privilege expansion.
+
+\section{Defensive Framework: Control Objectives That Actually Reduce Risk}
+
+This section is intentionally practical. You can turn it into a quarterly security plan.
+
+\textbf{Objective 1: Reduce Authentication Ambiguity}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Standardize known-good authentication entry points (bookmarks, clear internal guidance).
+    \item Make authentication prompts less frequent where possible so the unusual stands out.
+    \item Prefer phishing-resistant authentication methods for high-impact roles and actions.
+\end{itemize}
+
+\textbf{Success Metric Ideas}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Percentage of high-risk actions using phishing-resistant authentication.
+    \item Reduction in high-friction, repeated prompts that train users to approve blindly.
+\end{itemize}
+
+\textbf{Objective 2: Harden Reset and Recovery Workflows}
+
+Reset and recovery is where attackers turn one compromise into many.
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Require stronger identity proofing for resets.
+    \item Add step-up verification for sensitive account recovery actions.
+    \item Use two-person integrity for resets involving privileged accounts or high-impact systems.
+\end{itemize}
+
+\textbf{Success Metric Ideas}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Percentage of high-risk resets using two-person integrity.
+    \item Rate of failed reset attempts that were correctly blocked.
+\end{itemize}
+
+\textbf{Objective 3: Constrain Delegation and Privilege Pathways}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Enforce least privilege.
+    \item Remove stale groups and unused delegations.
+    \item Make privileges time-bound for administrative tasks rather than permanent.
+    \item Separate admin identities from daily-use identities.
+\end{itemize}
+
+\textbf{Success Metric Ideas}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Number of stale privileged memberships removed per quarter.
+    \item Percentage of admin actions performed via time-bound elevation.
+\end{itemize}
+
+\textbf{Objective 4: Detect Identity-to-Control-Plane Escalation}
+
+If you can’t prevent every compromise, you must shorten time-to-detection.
+
+Build detection around patterns such as:
+
+\begin{itemize}[leftmargin=1.5em]
+    \item unusual group membership changes
+    \item unexpected permission grants
+    \item anomalous sign-ins and session behaviour
+    \item unusual policy object edits
+    \item rapid changes that cluster in time after an identity event
+\end{itemize}
+
+\textbf{Success Metric Ideas}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Mean time to detect anomalous privilege changes.
+    \item Mean time to contain identity-to-control-plane incidents.
+\end{itemize}
+
+\textbf{Objective 5: Establish Verification Rituals for High-Impact Requests}
+
+This is old-school, and it works.
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Out-of-band verification for money movement, access changes, credential resets, and vendor or payment updates.
+    \item Standard scripts and escalation paths for staff who feel pressured.
+    \item Culture: it is always acceptable to verify, even with leadership.
+\end{itemize}
+
+\textbf{Success Metric Ideas}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item Verification compliance rate for high-impact requests.
+    \item Reduction in ``exception-based'' approvals.
+\end{itemize}
+
+\section{Where Defensive AI Helps, Without Becoming a New Risk}
+
+AI can assist defenders, but it must be governed. Safe uses include:
+
+\begin{itemize}[leftmargin=1.5em]
+    \item summarizing suspicious messages and extracting claims to verify
+    \item drafting user-safe responses that encourage verification
+    \item triaging incident reports and routing to the right team
+    \item correlating alerts into coherent incident narratives
+\end{itemize}
+
+Dangerous uses include:
+
+\begin{itemize}[leftmargin=1.5em]
+    \item letting AI approve access changes automatically
+    \item letting AI decide whether a reset is legitimate without human verification
+    \item treating AI output as authoritative in irreversible actions
+\end{itemize}
+
+Rule of thumb: AI can accelerate analysis and communication, but irreversible actions require verification rituals and human oversight.
+
+\section{Implementation Roadmap}
+
+The purpose of the first 90 days is not to eliminate social engineering entirely, but to reduce the probability that a trust failure becomes an identity event and that an identity event becomes a control-plane incident.
+
+\subsection{Weeks 1 to 2: Identify Escalation Pathways}
+
+The first step is to identify where routine trust can turn into administrative reach. Organizations should inventory high-impact workflows such as credential resets, access grants, payment changes, emergency access, vendor updates, and privileged approvals. They should also review delegated permissions, stale privileged memberships, break-glass accounts, and exception paths that allow ordinary identities to influence higher-impact actions.
+
+\textbf{Primary deliverables:}
+\begin{itemize}[leftmargin=1.5em]
+    \item High-impact workflow inventory
+    \item Privileged pathway register
+    \item Delegated access review baseline
+\end{itemize}
+
+\textbf{Success signal:}
+The organization can name its most likely identity-to-control-plane escalation paths instead of treating compromise as a generic account event.
+
+\subsection{Weeks 3 to 6: Harden High-Risk Trust Transitions}
+
+Once the major escalation pathways are known, the next step is to reduce ambiguity and add friction where it matters. Reset and recovery workflows should be hardened with stronger identity proofing, step-up verification, and two-person integrity for privileged cases. High-impact requests such as payment changes, access modifications, or vendor record updates should require defined out-of-band verification. Administrative identities should begin to be separated from daily-use identities, and stale delegation paths should begin to be removed or time-bounded.
+
+\textbf{Primary deliverables:}
+\begin{itemize}[leftmargin=1.5em]
+    \item Reset and recovery control standard
+    \item Verification rules for high-impact requests
+    \item Initial privileged access cleanup plan
+\end{itemize}
+
+\textbf{Success signal:}
+Routine compromise is less likely to translate directly into administrative action.
+
+\subsection{Weeks 7 to 10: Detect Identity-to-Control-Plane Movement}
+
+Prevention will never be perfect, so organizations should improve visibility into the transition from identity abuse to privilege expansion. Detection logic should focus on group membership changes, MFA resets, unusual consent grants, suspicious policy edits, unexpected access elevation, and clusters of administrative changes that follow suspicious sign-in activity. Incident response procedures should also be updated so that a compromised user account is investigated as a possible escalation pathway, not merely as a password reset event.
+
+\textbf{Primary deliverables:}
+\begin{itemize}[leftmargin=1.5em]
+    \item Identity-to-control-plane alert set
+    \item Escalation-focused triage playbook
+    \item Containment checklist for suspected identity abuse
+\end{itemize}
+
+\textbf{Success signal:}
+Defenders can detect and triage privilege expansion behavior before it becomes a larger control-plane incident.
+
+\subsection{Weeks 11 to 13: Validate Readiness and Governance Discipline}
+
+The final phase is to test whether the organization can actually operate the controls it has defined. Teams should run tabletop exercises centered on recursive trust scenarios such as fake executive requests, deceptive resets, fraudulent access changes, or compromised accounts followed by privilege manipulation. Findings should be documented, response ownership clarified, and unresolved exceptions formally tracked. The result should be a concise internal operating standard for verification, escalation, and containment in high-risk trust workflows.
+
+\textbf{Primary deliverables:}
+\begin{itemize}[leftmargin=1.5em]
+    \item Tabletop findings report
+    \item Exception register
+    \item Internal verification and escalation standard
+\end{itemize}
+
+\textbf{Success signal:}
+The organization can respond to a trust-driven identity event as an operational security incident, not as an isolated helpdesk anomaly.
+
+\section{Conclusion}
+
+AI did not create social engineering. It made it scalable, adaptive, and persistent. The threat is not limited to one vendor, one platform, or one industry. Any organization that relies on digital trust, routine authentication, delegated access, and administrative control planes is exposed.
+
+The defensive response is not panic. It is discipline.
+
+Reduce authentication ambiguity. Harden reset and recovery. Constrain delegation. Separate admin identities. Detect identity-to-control-plane escalation. Make verification rituals normal and respected.
+
+If trust is a security asset, then it must be governed like one.
+
+\clearpage
+\appendix
+
+\section{Quick Glossary}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{Authentication interposition:} A malicious detour that presents a look-alike or deceptive authentication step to capture access.
+    \item \textbf{Control plane:} Systems and components that govern identity, permissions, policies, and administrative authority.
+    \item \textbf{Delegation drift:} The accumulation of permissions and exceptions over time that creates unintended authority.
+    \item \textbf{Identity event:} Any incident where user credentials, sessions, tokens, or access are compromised or abused.
+    \item \textbf{Recursive trust:} A chain where small plausible actions lead to progressively higher-impact outcomes.
+\end{itemize}
+
+\section{References}
+
+\begin{enumerate}[leftmargin=1.5em,label={[}\arabic*{]}]
+    \item Milmo, Dan. ``UK engineering firm Arup falls victim to \pounds 20m deepfake scam.''
+    \textit{The Guardian}, May 17, 2024.
+    Available: \href{https://www.theguardian.com/technology/article/2024/may/17/uk-engineering-arup-deepfake-scam-hong-kong-ai-video}{The Guardian article}
+
+    \item Witty, Andrew.
+    \textit{Testimony of Andrew Witty, Chief Executive Officer, UnitedHealth Group, Before the Senate Finance Committee, ``Hacking America’s Health Care Assessing the Change Healthcare Cyber Attack and What’s Next''},
+    May 1, 2024.
+    Available: \href{https://www.finance.senate.gov/imo/media/doc/0501_witty_testimony.pdf}{Senate testimony PDF}
+
+    \item Microsoft Threat Intelligence. ``AI vs. AI: Detecting an AI-obfuscated phishing campaign.''
+    \textit{Microsoft Security Blog}, September 24, 2025.
+    Available: \href{https://www.microsoft.com/en-us/security/blog/2025/09/24/ai-vs-ai-detecting-an-ai-obfuscated-phishing-campaign/}{Microsoft Security Blog article}
+\end{enumerate}
+
+\end{document}
