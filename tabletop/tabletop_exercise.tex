@@ -17,27 +17,78 @@
 \maketitle
 
 \section{Exercise Overview}
-This exercise validates an organization’s resilience against \textbf{Recursive Trust} chains[cite: 28, 96]. It tests the transition from a simple "trust error" into an "identity event," eventually targeting the administrative control plane[cite: 12, 34].
+This exercise validates an organization’s resilience against \textbf{Recursive Trust} chains. It tests the transition from a simple ``trust error'' into an ``identity event,'' eventually targeting the administrative control plane.
+
+\section{Purpose and Scope}
+This exercise is designed to test whether a routine trust failure can be detected, challenged, and contained before it escalates into identity abuse and control-plane impact. It is intended to test verification discipline, escalation judgment, privilege hygiene, and cross-team detection. It is not intended to test malware analysis, endpoint response depth, or product-specific tooling performance.
+
+\section{Participants and Roles}
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{Facilitator:} Introduces injects, controls pacing, and guides the exercise through each phase.
+    \item \textbf{Target Employee Role:} Represents the initial trust decision point and the first opportunity for verification or compromise.
+    \item \textbf{Helpdesk / Service Desk:} Handles resets, support escalation, and user-facing recovery workflows.
+    \item \textbf{IAM / Directory Administration:} Reviews delegation paths, policy exposure, group sprawl, and shadow authority.
+    \item \textbf{SOC / Incident Response:} Detects, correlates, escalates, and contains identity-to-control-plane activity.
+    \item \textbf{Observers:} Record delays, decisions, failure patterns, and control gaps.
+\end{itemize}
+
+\section{Exercise Flow}
+\begin{enumerate}[leftmargin=1.5em]
+    \item Initial lure delivered through routine workflow communication.
+    \item Credentials or session access obtained through a spoofed portal or deceptive approval flow.
+    \item Post-compromise privilege mapping begins.
+    \item Evidence of delegation drift or shadow authority emerges.
+    \item Administrative-impact change occurs or is attempted.
+    \item Teams must detect, escalate, and contain the incident.
+\end{enumerate}
 
 \section{The Scenario}
 
 \subsection{Phase 1: Adaptive Reconnaissance \& The Lure}
-An attacker uses an LLM to synthesize public data into a high-fidelity message matching a mid-level employee’s workflow[cite: 35, 37]. 
-\begin{itemize}
-    \item \textbf{Inject:} The target receives a DM or email regarding a routine "Budget Outlook" or "Access Review." [cite: 33]
-    \item \textbf{The Breach:} The employee enters credentials into a spoofed "Secure Portal" flow. [cite: 39]
+An attacker uses an LLM to synthesize public data into a high-fidelity message matching a mid-level employee’s workflow.
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{Inject:} The target receives a DM or email regarding a routine ``Budget Outlook'' or ``Access Review.''
+    \item \textbf{The Breach:} The employee enters credentials into a spoofed ``Secure Portal'' flow.
 \end{itemize}
 
 \subsection{Phase 2: Post-Compromise Expansion}
-The attacker uses the initial session token to map privilege touchpoints, looking for delegation paths and group sprawl[cite: 43]. 
-\begin{itemize}
-    \item \textbf{The Pivot:} The attacker discovers "Delegation Drift"—a legacy permission grant that allows the user to influence sensitive policy objects[cite: 47, 94].
+The attacker uses the initial session token to map privilege touchpoints, looking for delegation paths and group sprawl.
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{The Pivot:} The attacker discovers ``Delegation Drift''---a legacy permission grant that allows the user to influence sensitive policy objects.
 \end{itemize}
 
 \subsection{Phase 3: Control-Plane Escalation}
-The attacker converts shadow authority into administrative capability[cite: 48].
-\begin{itemize}
-    \item \textbf{The Impact:} A rapid cluster of changes occurs: a new "Break-Glass" account is created, or MFA is disabled for a specific administrative role[cite: 70].
+The attacker converts shadow authority into administrative capability.
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{The Impact:} A rapid cluster of changes occurs: a new ``Break-Glass'' account is created, or MFA is disabled for a specific administrative role.
+\end{itemize}
+
+\section{Expected Decision Points}
+\begin{itemize}[leftmargin=1.5em]
+    \item Does the initial recipient verify the request before interacting with the portal or approval flow?
+    \item Does helpdesk treat the event as routine user trouble, or as a potentially suspicious identity event?
+    \item Does the organization recognize the significance of delegation paths and shadow authority before administrative impact occurs?
+    \item Does the SOC correlate suspicious sign-in or session activity with rapid policy or privilege changes?
+    \item Is there clear ownership for containment once identity-to-control-plane escalation is suspected?
+\end{itemize}
+
+\section{Failure Patterns to Watch For}
+\begin{itemize}[leftmargin=1.5em]
+    \item Familiarity substituted for verification.
+    \item Pressure from apparent authority overrode normal process.
+    \item The event was treated as ordinary phishing or a password reset problem only.
+    \item Identity abuse and policy changes were investigated as separate events rather than a connected chain.
+    \item Delegation drift created unexpected administrative influence.
+    \item No single team owned the escalation response.
+\end{itemize}
+
+\section{Expected Outputs}
+\begin{itemize}[leftmargin=1.5em]
+    \item Incident timeline
+    \item Escalation-path summary
+    \item Identified control gaps
+    \item Recommended workflow or policy changes
+    \item Assigned remediation owners
 \end{itemize}
 
 \newpage
@@ -45,28 +96,34 @@ The attacker converts shadow authority into administrative capability[cite: 48].
 \section{One-Page Observer’s Guide}
 
 \subsection{Objective}
-To identify gaps in \textbf{Detection} (Time-to-Identify) and \textbf{Discipline} (Verification Rituals)[cite: 69, 89].
+To identify gaps in \textbf{Detection} (Time-to-Identify) and \textbf{Discipline} (Verification Rituals).
 
 \subsection{Key Observation Points}
-\begin{enumerate}
-    \item \textbf{Authentication Ambiguity:} Did the participant question the "familiar" login prompt, or did familiarity substitute for verification? [cite: 41, 59]
-    \item \textbf{Verification Rituals:} Did anyone suggest an out-of-band (OOB) check (e.g., a phone call or secondary chat) before complying with the request? [cite: 73, 81]
-    \item \textbf{Detection Capability:} Would our SOC see a rapid cluster of policy edits following an identity event? [cite: 70, 84]
-    \item \textbf{Blast Radius:} Is the compromised user’s access strictly limited by "Least Privilege," or does "Delegation Drift" allow lateral movement? [cite: 46, 66]
+\begin{enumerate}[leftmargin=1.5em]
+    \item \textbf{Authentication Ambiguity:} Did the participant question the ``familiar'' login prompt, or did familiarity substitute for verification?
+    \item \textbf{Verification Rituals:} Did anyone suggest an out-of-band (OOB) check (e.g., a phone call or secondary chat) before complying with the request?
+    \item \textbf{Detection Capability:} Would our SOC see a rapid cluster of policy edits following an identity event?
+    \item \textbf{Blast Radius:} Is the compromised user’s access strictly limited by ``Least Privilege,'' or does ``Delegation Drift'' allow lateral movement?
 \end{enumerate}
 
 \subsection{Success Metrics Tracking}
-\begin{itemize}
-    \item \textbf{Mean Time to Detect (MTTD):} Time elapsed between the "Identity Event" and SOC notification. [cite: 71]
-    \item \textbf{Mean Time to Contain (MTTC):} Time elapsed before the administrative elevation was blocked. [cite: 71]
-    \item \textbf{Verification Rate:} \% of participants who successfully triggered a verification ritual. [cite: 75]
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{Mean Time to Detect (MTTD):} Time elapsed between the ``Identity Event'' and SOC notification.
+    \item \textbf{Mean Time to Contain (MTTC):} Time elapsed before the administrative elevation was blocked.
+    \item \textbf{Verification Rate:} \% of participants who successfully triggered a verification ritual.
+    \item \textbf{Escalation Recognition Time:} Time elapsed before participants recognized that the event had moved beyond a routine phishing or credential issue into identity-to-control-plane escalation.
+    \item \textbf{Containment Ownership Clarity:} Whether a clear team or role assumed containment responsibility once shadow authority or control-plane impact was suspected.
 \end{itemize}
 
 \subsection{Debrief Questions}
-\begin{itemize}
-    \item Do we have a standard script for staff who feel pressured by "senior leadership" messages? [cite: 74]
-    \item Are our reset and recovery workflows hardened with two-person integrity? [cite: 64]
-    \item Is there a fast containment playbook for suspected identity-to-control-plane escalation? [cite: 85]
+\begin{itemize}[leftmargin=1.5em]
+    \item Do we have a standard script for staff who feel pressured by ``senior leadership'' messages?
+    \item Are our reset and recovery workflows hardened with two-person integrity?
+    \item Is there a fast containment playbook for suspected identity-to-control-plane escalation?
+    \item At what point did the exercise stop being ``just phishing'' and become an identity and control-plane incident?
+    \item Did any team assume that a familiar workflow was inherently trustworthy?
+    \item Were privilege pathways and delegation drift understood quickly enough to reduce blast radius?
+    \item Was ownership for escalation, containment, and recovery clear across teams?
 \end{itemize}
 
 \end{document}
