@@ -1,0 +1,72 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+\titleformat{\section}{\large\bfseries\color{blue!70!black}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\title{\textbf{Tabletop Exercise: The Recursive Trust Hijack}\\ \large Red-Teaming Identity-to-Control-Plane Escalation}
+\author{Based on the Research of Rogel S.J. Corral}
+\date{March 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Exercise Overview}
+This exercise validates an organization’s resilience against \textbf{Recursive Trust} chains[cite: 28, 96]. It tests the transition from a simple "trust error" into an "identity event," eventually targeting the administrative control plane[cite: 12, 34].
+
+\section{The Scenario}
+
+\subsection{Phase 1: Adaptive Reconnaissance \& The Lure}
+An attacker uses an LLM to synthesize public data into a high-fidelity message matching a mid-level employee’s workflow[cite: 35, 37]. 
+\begin{itemize}
+    \item \textbf{Inject:} The target receives a DM or email regarding a routine "Budget Outlook" or "Access Review." [cite: 33]
+    \item \textbf{The Breach:} The employee enters credentials into a spoofed "Secure Portal" flow. [cite: 39]
+\end{itemize}
+
+\subsection{Phase 2: Post-Compromise Expansion}
+The attacker uses the initial session token to map privilege touchpoints, looking for delegation paths and group sprawl[cite: 43]. 
+\begin{itemize}
+    \item \textbf{The Pivot:} The attacker discovers "Delegation Drift"—a legacy permission grant that allows the user to influence sensitive policy objects[cite: 47, 94].
+\end{itemize}
+
+\subsection{Phase 3: Control-Plane Escalation}
+The attacker converts shadow authority into administrative capability[cite: 48].
+\begin{itemize}
+    \item \textbf{The Impact:} A rapid cluster of changes occurs: a new "Break-Glass" account is created, or MFA is disabled for a specific administrative role[cite: 70].
+\end{itemize}
+
+\newpage
+
+\section{One-Page Observer’s Guide}
+
+\subsection{Objective}
+To identify gaps in \textbf{Detection} (Time-to-Identify) and \textbf{Discipline} (Verification Rituals)[cite: 69, 89].
+
+\subsection{Key Observation Points}
+\begin{enumerate}
+    \item \textbf{Authentication Ambiguity:} Did the participant question the "familiar" login prompt, or did familiarity substitute for verification? [cite: 41, 59]
+    \item \textbf{Verification Rituals:} Did anyone suggest an out-of-band (OOB) check (e.g., a phone call or secondary chat) before complying with the request? [cite: 73, 81]
+    \item \textbf{Detection Capability:} Would our SOC see a rapid cluster of policy edits following an identity event? [cite: 70, 84]
+    \item \textbf{Blast Radius:} Is the compromised user’s access strictly limited by "Least Privilege," or does "Delegation Drift" allow lateral movement? [cite: 46, 66]
+\end{enumerate}
+
+\subsection{Success Metrics Tracking}
+\begin{itemize}
+    \item \textbf{Mean Time to Detect (MTTD):} Time elapsed between the "Identity Event" and SOC notification. [cite: 71]
+    \item \textbf{Mean Time to Contain (MTTC):} Time elapsed before the administrative elevation was blocked. [cite: 71]
+    \item \textbf{Verification Rate:} \% of participants who successfully triggered a verification ritual. [cite: 75]
+\end{itemize}
+
+\subsection{Debrief Questions}
+\begin{itemize}
+    \item Do we have a standard script for staff who feel pressured by "senior leadership" messages? [cite: 74]
+    \item Are our reset and recovery workflows hardened with two-person integrity? [cite: 64]
+    \item Is there a fast containment playbook for suspected identity-to-control-plane escalation? [cite: 85]
+\end{itemize}
+
+\end{document}
