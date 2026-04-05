@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/1198966266.svg)](https://doi.org/10.5281/zenodo.19432331)
+[![DOI](https://zenodo.org/badge/1198966266.svg)](https://doi.org/10.5281/zenodo.19432348)
 
 # AI-Augmented Social Engineering
 
