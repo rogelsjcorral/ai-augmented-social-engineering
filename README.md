@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/1198966266.svg)](https://doi.org/10.5281/zenodo.19432331)
+
 # AI-Augmented Social Engineering
 
 Technical position paper on AI-augmented social engineering as identity-to-control-plane risk.
