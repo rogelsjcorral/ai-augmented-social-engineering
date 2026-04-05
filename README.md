@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19432348.svg)](https://doi.org/10.5281/zenodo.19432348)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19432540.svg)](https://doi.org/10.5281/zenodo.19432540)
 
 # AI-Augmented Social Engineering
 
@@ -37,6 +37,6 @@ Corral, Rogel. *Tabletop Exercise: The Recursive Trust Hijack*. March 2026.
 
 ## DOI
 
-- Version-specific DOI: [10.5281/zenodo.19432348](https://doi.org/10.5281/zenodo.19432348)
+- Version-specific DOI: [10.5281/zenodo.19432540](https://doi.org/10.5281/zenodo.19432540)
 - All versions DOI: [10.5281/zenodo.19432331](https://doi.org/10.5281/zenodo.19432331)
-- Zenodo record: [19432348](https://zenodo.org/records/19432348)
+- Zenodo record: [19432540](https://zenodo.org/records/19432540)
