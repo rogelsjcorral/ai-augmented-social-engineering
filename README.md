@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/1198966266.svg)](https://doi.org/10.5281/zenodo.19432348)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19432348.svg)](https://doi.org/10.5281/zenodo.19432348)
 
 # AI-Augmented Social Engineering
 
@@ -34,3 +34,9 @@ This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 Inte
 Corral, Rogel. *AI-Augmented Social Engineering: When Trust Becomes a Control-Plane Risk*. Version 1.0, April 2026.
 
 Corral, Rogel. *Tabletop Exercise: The Recursive Trust Hijack*. March 2026.
+
+## DOI
+
+- Version-specific DOI: [10.5281/zenodo.19432348](https://doi.org/10.5281/zenodo.19432348)
+- All versions DOI: [10.5281/zenodo.19432331](https://doi.org/10.5281/zenodo.19432331)
+- Zenodo record: [19432348](https://zenodo.org/records/19432348)
